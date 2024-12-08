@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  #flask backend
+  backend:
+    image: python:3.10-slim
+    container_name: flask_backend
+    working_dir: /app
+    volumes:
+      - ./backend:/app
+    #Exposes port 5000 and maps it to the same port on the host
+    ports:
+      - "5000:5000"
+    networks:
+      - app_network # connected to same network
+    #Installs dependencies from requirements.txt and runs app.py
+    command: >
+      sh -c "pip install -r requirements.txt && python app.py"
+  #nginx_frontend
+  frontend:
+    image: nginx:latest
+    container_name: nginx_frontend
+    #Mounts the local frontend folder into the container's /usr/share/nginx/html directory
+    #Mounts a custom nginx.conf file to configure Nginx
+    volumes:
+      - ./frontend:/usr/share/nginx/html
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    #Exposes port 80 and maps it to the same port on the host
+    ports:
+      - "80:80"
+    networks:
+      - app_network # connected to same network
+
+#Creates a custom bridge network app_network for communication between services
+networks:
+  #network name
+  app_network:
+    #The default networking mode for containers, which isolates the network traffic from the host and other networks unless explicitly connected. Containers attached to app_network can only communicate with other containers on the same network.
+    driver: bridge

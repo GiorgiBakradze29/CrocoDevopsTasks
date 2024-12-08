@@ -1,0 +1,32 @@
+# run the following command in terminal
+# docker-compose up --build -d
+version: "3.8"
+
+services:
+  # MongoDB Service
+  db:
+    #MongoDB image
+    image: mongo:latest
+    container_name: mongodb
+    # Restart if the container fails
+    restart: always
+    ports:
+      # MongoDB port
+      - "27017:27017"
+
+  # Node.js App Service
+  app:
+    # Build from the current directory (Dockerfile)
+    build: .
+    container_name: node-app
+    depends_on:
+      # Ensure MongoDB is started first
+      - db
+    environment:
+      # Database URI for Node.js to connect
+      - MONGO_URI=mongodb://db:27017/mydb
+    # Restart the app if it fails
+    restart: always
+    ports:
+      # Expose Node.js app port
+      - "3000:3000"

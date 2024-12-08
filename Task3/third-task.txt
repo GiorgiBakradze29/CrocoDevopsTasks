@@ -1,0 +1,5 @@
+1. minikube start --driver=docker
+2. kubectl apply -f nginx-deployment.yaml
+3. kubectl get pods
+4. kubectl get deployment nginx-deployment
+5. kubectl get service nginx-service

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frontend - Flask API Integration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .response {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Frontend - Flask API Integration</h1>
+        <p>This simple frontend sends a request to the Flask API and displays the response.</p>
+        <button id="fetchData">Get Message from Backend</button>
+
+        <div class="response" id="responseMessage" style="display: none;">
+            <strong>Response:</strong>
+            <p id="responseText"></p>
+        </div>
+    </div>
+
+    <script>
+        // Select the button and response elements
+        const fetchDataButton = document.getElementById('fetchData');
+        const responseMessage = document.getElementById('responseMessage');
+        const responseText = document.getElementById('responseText');
+
+        // Set up the button click event listener
+        fetchDataButton.addEventListener('click', async () => {
+            try {
+                const response = await fetch('/api');  // This is the API route on the backend
+                const data = await response.json();
+
+                // Display the response message
+                responseMessage.style.display = 'block';
+                responseText.innerText = data.message;
+            } catch (error) {
+                // Handle any errors
+                responseMessage.style.display = 'block';
+                responseText.innerText = 'Error fetching data from the backend.';
+            }
+        });
+    </script>
+
+</body>
+
+</html>

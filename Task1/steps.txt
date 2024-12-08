@@ -1,0 +1,9 @@
+Share the steps to build, run, and stop the container:
+
+Inside terminal while docker desktop is open:
+
+docker build -t python-app .
+
+docker run --name python-app-container python-app
+
+docker stop python-app-container
